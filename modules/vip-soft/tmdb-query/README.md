@@ -51,13 +51,17 @@ A rendszer telepítése a
 
       composer install
 
-paranccsal történk, mely létrehozza az alapvető laravel és a tesztfeladat függőségeit. A függőségek telepítése után az adatbázis létrehozásához le kell futtatni a 
+paranccsal történk, mely létrehozza az alapvető laravel és a tesztfeladat függőségeit. A függőségek telepítése után az adatbázis létrehozásához, - természetesen a .env fájlban beállítjuk az adatbázis kapcsolatot - le kell futtatni a 
 
      php artisan migrate
 
-parancsot. Ezzel létrejött az adatbázis szerkezete. Az adatbázis adatfeltültése kétféle módon történhet. 
+parancsot. Ezzel létrejött az adatbázis szerkezete. 
 
-Parancssorból meghívjuk a
+Mielőtt az adatfeltöltést elvégeznénk a .env fájlba be kell írnunk az alábbi sort
+     
+     TMDB_APIKEY=faae24912e55fa27b51bc9fdb47b5f20
+
+Az adatbázis adat feltöltése kétféle módon történhet. Parancssorból meghívjuk a
 
      php artisan tmdb:initialize
 
