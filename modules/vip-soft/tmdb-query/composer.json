@@ -1,0 +1,33 @@
+{
+  "name": "vip-soft/tmdb-query",
+  "description": "MindTechApps próbafeladat megoldása",
+  "type": "module",
+  "authors": [
+      {
+          "name": "Veress Imre",
+          "email": "veress.imre.debrecen@gmail.com"
+      }
+  ],
+  "minimum-stability": "dev",
+  "autoload": {
+      "psr-4": {
+          "VipSoft\\TmdbQuery\\": "src/"
+      }
+  },
+  "autoload-dev": {
+      "psr-4": {
+          "VipSoft\\TmdbQuery\\Tests\\": "Tests/"
+      }
+  },
+  "require": {
+      "php": "^8.0.2",
+      "ext-curl": "*"
+  },
+  "extra": {
+      "laravel": {
+          "providers": [
+              "VipSoft\\TmdbQuery\\Providers\\TmdbQueryServiceProvider"
+          ]
+      }
+  }
+}

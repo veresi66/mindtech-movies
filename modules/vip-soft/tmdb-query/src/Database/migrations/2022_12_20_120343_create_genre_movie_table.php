@@ -12,20 +12,20 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('movies_genres', function (Blueprint $table) {
+        Schema::create('genre_movie', function (Blueprint $table) {
             $table->charset   = 'utf8mb4';
             $table->collation = 'utf8mb4_general_ci';
             $table->engine    = 'InnoDB';
 
-            $table->bigInteger(column : 'movies_id')->unsigned();
-            $table->bigInteger(column : 'genres_id')->unsigned();
+            $table->bigInteger(column : 'movie_id')->unsigned();
+            $table->bigInteger(column : 'genre_id')->unsigned();
 
-            $table->unique(columns : ['movies_id', 'genres_id']);
+            $table->unique(columns : ['movie_id', 'genre_id']);
 
-            $table->foreign(columns : 'movies_id')->references('id')->on('movies')->onUpdate('CASCADE')->onDelete(
+            $table->foreign(columns : 'movie_id')->references('id')->on('movies')->onUpdate('CASCADE')->onDelete(
                 'CASCADE'
             );
-            $table->foreign(columns : 'genres_id')->references('id')->on('genres')->onUpdate('CASCADE')->onDelete(
+            $table->foreign(columns : 'genre_id')->references('id')->on('genres')->onUpdate('CASCADE')->onDelete(
                 'CASCADE'
             );
 
@@ -40,6 +40,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('movies_genres');
+        Schema::dropIfExists('genre_movie');
     }
 };

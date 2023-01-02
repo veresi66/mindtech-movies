@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -17,26 +16,28 @@ return new class extends Migration
             $table->charset   = 'utf8mb4';
             $table->collation = 'utf8mb4_general_ci';
             $table->engine    = 'InnoDB';
-
+            
             $table->id()->comment("Egyedi azonosító");
-
+            
             $table->string(column : 'title')->comment("A film címe");
             $table->text(column : 'overview')->comment("Leírás");
+            $table->integer(column : 'length')->nullable()->comment("A film hossza");
             $table->integer(column : 'tmdb_id')->comment("TMDB egyedi azonosító");
+            $table->integer(column : 'tmdb_order')->comment("TMDB helyezés");
             $table->float(column : 'tmdb_average')->comment("TMDB szavazat átlag");
             $table->integer(column : 'tmdb_count')->comment("TMDB szavazatok száma");
             $table->string(column : 'tmdb_url')->comment("TMDB URL");
             $table->bigInteger(column : 'director_id')->unsigned()->comment("A rendező ID");
+            $table->foreign(columns : 'director_id')->references('id')->on('directors')->onDelete('restrict');
             $table->string(column : 'poster_url')->nullable()->comment("Borítókép URL");
-
+            $table->string(column : 'hash')->comment("Az adatok hash értéke");
             $table->timestamps();
-
-            $table->foreign(columns : 'director_id')->references('id')->on('directors')->onDelete('CASCADE')->onUpdate('CASCADE');
-
+            $table->softDeletes();
+            
             $table->comment("Filmek nyilvántartása");
         });
     }
-
+    
     /**
      * Reverse the migrations.
      *

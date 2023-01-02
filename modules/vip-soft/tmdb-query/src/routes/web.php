@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use VipSoft\TmdbQuery\Http\Controllers\PageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function(){
-    return view('welcome');
+Route::namespace('core')->group(function() {
+    Route::get('/tmdb', [PageController::class, 'index'])->name('page.index');
+    Route::get('/tmdb/{id}', [PageController::class, 'view'])->name('page.view');
 });
