@@ -42,7 +42,7 @@ class TmdbUpdate extends Command
                 TransactionsController::newMovie($movie, $key);
                 $newMovie++;
             } elseif (($movie['hash'] != $dbMovie->hash) || (($key + 1) !== $dbMovie->tmdb_order)) {
-                TransactionsController::updateMovie($movie, $key);
+                TransactionsController::updateMovie($movie, $key + 1);
                 $updatedMovie++;
             }
             

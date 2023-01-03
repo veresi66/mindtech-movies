@@ -13,6 +13,9 @@ class TransactionsController extends Controller
     public const MOVIE_PATH  = 'https://www.themoviedb.org/movie/';
     public const POSTER_PATH = 'https://image.tmdb.org/t/p/w500';
     
+    /**
+     * @return void
+     */
     public static function initializeDatabase() : void
     {
         set_time_limit(0);
@@ -26,16 +29,22 @@ class TransactionsController extends Controller
         
         $i = 1;
         if ( !(new MovieController())->fullTable()) {
-            foreach ($movies as $item) {
-                self::newMovie($item, $i);
+            foreach ($movies as $movie) {
+                self::newMovie($movie, $i);
                 $i++;
             }
         }
     }
     
-    public static function newMovie($item, $i) {
+    /**
+     * @param array $item
+     * @param int $tmdbOrder
+     * @return void
+     */
+    public static function newMovie(array $item, int $tmdbOrder) : void
+    {
         $director = self::getOrCreateDirector($item['id']);
-        $movie    = self::getOrCreateMovie($item, $director, $i);
+        $movie    = self::getOrCreateMovie($item, $director->id, $tmdbOrder);
     
         foreach ($item['genre_ids'] as $genre_id) {
             Genre_movie::firstOrCreate([
@@ -45,31 +54,43 @@ class TransactionsController extends Controller
         }
     }
     
-    public static function updateMovie($movie, $tmdbOrder)
+    /**
+     * @param array $movie
+     * @param int $tmdbOrder
+     * @return void
+     */
+    public static function updateMovie(array $movie, int $tmdbOrder) : void
     {
         $director = self::getOrCreateDirector($movie['id']);
-        $dbMovie = Movie::firstOrFail($movie['id']);
-        
-        $dbMovie->title = $movie['title'];
-        $dbMovie->length = CommunicationController::getMovieLength($movie['id']);
-        $dbMovie->overview = $movie['overview'];
-        $dbMovie->tmdb_average = $movie['vote_average'];
-        $dbMovie->tmdb_count = $movie['vote_count'];
-        $dbMovie->director_id = $director->id;
-        $dbMovie->poster_url = self::POSTER_PATH . $movie['poster_path'];
-        $dbMovie->hash = hash('sha256', json_encode($movie));
-        $dbMovie->tmdb_order = $tmdbOrder;
-        $dbMovie->save();
+        Movie::where('tmdb_id', $movie['id'])->update([
+            'title'        => $movie['title'],
+            'overview'     => $movie['overview'],
+            'length'       => CommunicationController::getMovieLength($movie['id']),
+            'tmdb_average' => $movie['vote_average'],
+            'tmdb_count'   => $movie['vote_count'],
+            'director_id'  => $director->id,
+            'poster_url'   => self::POSTER_PATH . $movie['poster_path'],
+            'hash'         => hash('sha256', json_encode($movie)),
+            'tmdb_order'   => $tmdbOrder,
+        ]);
     }
     
-    public static function deleteMovies($movieIds)
+    /**
+     * @param array $movieIds
+     * @return void
+     */
+    public static function deleteMovies(array $movieIds) : void
     {
         foreach ($movieIds as $movieId) {
             Movie::findOrFail($movieId)->delete();
         }
     }
     
-    private static function getOrCreateDirector($movieId)
+    /**
+     * @param int $movieId
+     * @return \VipSoft\TmdbQuery\Models\Director
+     */
+    private static function getOrCreateDirector(int $movieId) : Director
     {
         $directorData = CommunicationController::getDirectorFromMovie($movieId);
         
@@ -81,7 +102,13 @@ class TransactionsController extends Controller
         ]);
     }
     
-    private static function getOrCreateMovie(array $item,Director $director, int $i)
+    /**
+     * @param array $item
+     * @param int $directorId
+     * @param int $tmdbOrder
+     * @return mixed
+     */
+    private static function getOrCreateMovie(array $item, int $directorId, int $tmdbOrder) : mixed
     {
         return Movie::firstOrCreate([
             'title'        => $item['title'],
@@ -94,10 +121,10 @@ class TransactionsController extends Controller
                     $item['id'] . " " . $item['original_title'],
                     '-'
                 ),
-            'director_id'  => $director->id,
+            'director_id'  => $directorId,
             'poster_url'   => self::POSTER_PATH . $item['poster_path'],
             'hash'         => $item['hash'],
-            'tmdb_order'   => $i,
+            'tmdb_order'   => $tmdbOrder,
         ]);
     }
     

@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->id()->comment("Egyedi azonosító");
 
             $table->string(column : 'name')->comment("A rendező neve");
-            $table->integer(column : 'tmdb_id')->comment("A rendező TMDB ID-ja");
+            $table->integer(column : 'tmdb_id')->unique()->comment("A rendező TMDB ID-ja");
             $table->text(column : 'biography')->nullable()->comment("A rendsző életrajza");
             $table->date(column : 'birth_date')->nullable()->comment("A rendező születési ideje");
 

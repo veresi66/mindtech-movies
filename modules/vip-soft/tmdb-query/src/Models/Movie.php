@@ -57,6 +57,10 @@ class Movie extends Model
         return $this->length ? $hour . ' óra ' . $minutes . ' perc' : null;
     }
     
+    /**
+     * @param $query
+     * @return mixed
+     */
     public function scopeTmdbaverage($query)
     {
         return $query->orderBy('tmdb_average', 'desc')->orderBy('id');

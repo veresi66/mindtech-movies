@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->string(column : 'title')->comment("A film címe");
             $table->text(column : 'overview')->comment("Leírás");
             $table->integer(column : 'length')->nullable()->comment("A film hossza");
-            $table->integer(column : 'tmdb_id')->comment("TMDB egyedi azonosító");
+            $table->integer(column : 'tmdb_id')->unique()->comment("TMDB egyedi azonosító");
             $table->integer(column : 'tmdb_order')->comment("TMDB helyezés");
             $table->float(column : 'tmdb_average')->comment("TMDB szavazat átlag");
             $table->integer(column : 'tmdb_count')->comment("TMDB szavazatok száma");

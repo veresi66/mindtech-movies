@@ -17,11 +17,19 @@ class Director extends Model
     protected $fillable = ['name', 'tmdb_id', 'biography', 'birth_date'];
     protected $dates    = ['birth_date'];
     
+    /**
+     * @param $value
+     * @return null
+     */
     public function getBiographyHtmlAttribute($value)
     {
         return $this->biography ? Markdown::convertToHtml(e($this->biography)) : null;
     }
     
+    /**
+     * @param $value
+     * @return string|null
+     */
     public function getBirthDateHtmlAttribute($value)
     {
         return $this->birth_date ?

@@ -45,6 +45,15 @@ A megoldásom:
 
 A teszt feladat megoldása Laravel 9 keretrendszerben készült.
 
+A tesztelés alapfeltétele, hogy a php.ini fájlban (ami a CLI-t, vagy a web-modult szabályozza, ha ez két külön fájl, akkor mind a kettőben) be kell állítani a certifikát elérését. Nálam az alábbi beállítással működik:
+
+     [curl]
+     curl.cainfo = d:\wamp64\bin\php\php8.0.26\extras\ssl\cacert.pem
+
+     [openssl]
+     openssl.cafile=d:\wamp64\bin\php\php8.0.26\extras\ssl\cacert.pem
+
+
 A feladat megoldása modules könyvtárban található. A megoldás megpróbálja a magyar nyelvűadatokat kinyerni az TMDB API-n keresztül, ahol nincs magyar nyelv, ott angol nyelvű szöveg kerül mentésre, ha egyik sincs akkor a mező üresen marad.
 
 A rendszer telepítése a 
@@ -72,4 +81,4 @@ A feladatban meghatározott cron script-ként futtatására tervezett parancs a
      php artisan tmdb:update
 
 
-A feladathoz nem készítettem teszt eseteket.
+A feladathoz készítettem teszt eseteket, melyeket a module/vip-soft/tmdb-query/Test mappában található meg. Az adatbázis controllerek tesztjéhez szükséges, hogy az adatbázis fel legyen töltve adatokkal. A teszt esetek a 2023. január 02-ei állapotot tükrözik. 
